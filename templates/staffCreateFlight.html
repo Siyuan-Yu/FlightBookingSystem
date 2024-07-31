@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body>
+    <center>
+        <h1> Create Flight </h1>
+        <form action="/staffCreateFlight" method="POST">
+            <div class="container">
+                <label>Flight Number : </label>
+                <input type="text" placeholder="Enter Flight Number" name="flight_num">
+                <label>departure_airport : </label>
+                <input type="text" placeholder="Enter departure_airport" name="departure_airport">
+                <label>departure_date :</label>
+                <input type="date" placeholder="Enter departure_date" name="departure_date">
+                <label>departure_time : </label>
+                <input type="time" placeholder="Enter departure_time" name="departure_time"><br>
+                <label>arrival_airport : </label>
+                <input type="text" placeholder="Enter arrival_airport" name="arrival_airport">
+                <label>arrival_date :</label>
+                <input type="date" placeholder="Enter arrival_date" name="arrival_date">
+                <label>arrival_time : </label>
+                <input type="time" placeholder="Enter arrival_time" name="arrival_time"><br>
+                <label>price : </label>
+                <input type="text" placeholder="Enter price" name="price">
+                <label>Status:</label>
+                <select name="status">
+                    <option value="Upcoming" selected>Upcoming</option>
+                    <option value="Delayed">Delayed</option>
+                    <option value="In-progres">In-progress</option>
+                    <option value="Cancelled">Cancelled</option>
+                </select><br>
+                <label>airplane_id : </label>
+                <input type="text" placeholder="Enter airplane_id" name="airplane_id">
+
+                
+                <button id="button1" type="submit">Submit</button>
+            </div>
+            
+        </form>
+        <div style="width: 500px;padding: 16px;"> <a href=staffHomePage><button>GO BACK</button></a></div>
+       
+        
+    </center>
+</body>
+
+</html>

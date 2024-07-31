@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>cusTrackSearch</title>
+</head>
+<body>
+    <tr>
+        {% for col in range(th|length)  %}
+    
+        <th>{{ th[col] }}</th>
+
+        {% endfor %}
+    </tr>
+
+    <div id="res" height='200px'>
+
+    {% for row in range(res|length)  %}
+    <tr>
+        <td>{{ res[row].monthly_spending}}</td>
+        <td>{{ res[row].month_list }}</td>
+        <td>{{ res[row].total_spending_in_range}}</td>
+    </tr>
+    {% endfor %}
+
+    </div>
+</body>
+</html>

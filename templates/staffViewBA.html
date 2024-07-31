@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="/static/style.css">
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script src="static/addFlight.js"></script> -->
+    <style>
+        th{
+            width: 50%;
+        }
+        caption{
+            font-size:larger;
+            font-weight: bold;
+            
+        }
+    </style>
+</head>
+
+<body>
+    <!-- <center> -->
+        <table class="table table-striped" style="width:100%;text-align: center;margin:20px;">
+            <caption>Top 5 Booking Agent in the Past Month-Ticket</caption>
+            <tr>
+                <th>Booking Agent ID</th>
+                <th>Amount</th>
+            </tr>
+
+            {% for row in range(top5_ba_tickets_m|length)  %}
+            <tr>
+                <td>{{ top5_ba_tickets_m[row]}}</td>
+                <td>{{ c1xAxis_categories_email_m[row] }}</td>
+            </tr>
+            {% endfor %}
+
+        </table>
+        <br>
+        <br>
+        <table class="table table-striped" style="width:100%;text-align: center;margin:20px;">
+            <caption>Top 5 Booking Agent in the Past Year-Ticket</caption>
+            <tr>
+                <th>Booking Agent ID</th>
+                <th>Amount</th>
+            </tr>
+
+            {% for row in range(top5_ba_tickets_y|length)  %}
+            <tr>
+                <td>{{ top5_ba_tickets_y[row]}}</td>
+                <td>{{ c1xAxis_categories_email_y[row] }}</td>
+            </tr>
+            {% endfor %}
+
+        </table>
+        <br><br>
+        
+        <table class="table table-striped" style="width:100%;text-align: center;margin:20px;">
+            <caption>Top 5 Booking Agent in the Past Year-Commission</caption>
+            <tr>
+                <th>Booking Agent ID</th>
+                <th>Amount</th>
+            </tr>
+
+            {% for row in range(top5_ba_commission|length)  %}
+            <tr>
+                <td>{{ top5_ba_commission[row]}}</td>
+                <td>{{ c2xAxis_categories_email[row] }}</td>
+            </tr>
+            {% endfor %}
+
+        </table>
+        <center>
+            <div style="width: 500px;padding: 16px;"> <a href=view><button>GO BACK</button></a></div>
+
+        </center>
+        
+</body>
+
+</html>
+
+
+
+

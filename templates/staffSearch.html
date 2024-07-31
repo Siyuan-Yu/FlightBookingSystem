@@ -1,0 +1,25 @@
+<HTML>
+
+
+    <body>
+        <table class="table table-striped" style="width:100%;text-align: center;">
+            <tr>
+                {% for col in range(th|length)  %}
+    
+                <th>{{ th[col] }}</th>
+    
+                {% endfor %}
+            </tr>
+    
+            {% for row in range(a|length)  %}
+            <tr>
+                {% for column in range(a[0]|length) %}
+                <td>{{ a[row][column] }}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+    
+        </table>
+    </body>
+    
+    </HTML>

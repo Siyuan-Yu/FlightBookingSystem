@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>baHomePage</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script src="static/upComingSearch.js"></script>
+</head>
+<body>
+    <h1>Hi, {{email}}, This is Your HomePage</h1>
+    <span>
+        <br>
+        <a href="/logout" style = "margin:20px" >Log Out</a> <br> <br>
+        <a href='/baPurchase' style = "margin:20px">Go to Booking Agent Flight Purcahse</a> 
+        <a href='/baTopCustomers' style = "margin:20px">Go to Booking Agent Top Customers</a> 
+        <a href='/baViewCommission' style = "margin:20px" >Go to Booking Agent View Commission</a> 
+        <a href='/baViewMyFlight' style = "margin:20px" >Go to Booking Agent Flight View My Flight</a>
+    </span>
+    
+    <form method="POST">
+        <center>
+            <H1>Search flights</H1> <br>
+            <form class="upComingSearch">
+                <label>Departure City
+                    <select name="departureCity" id="departureCity" method="GET" action="/">
+                        <option value="{{cityAirportList[0]}}" selected>{{cityAirportList[0]}}</option>
+                        {% for i in cityAirportList[1:] %}
+                        <option value="{{i}}">{{i}}</option>"
+                        {% endfor %}
+                    </select>
+                </label>
+                <label>Arrival City
+                    <select name="arrivalCity" id="arrivalCity" method="GET" action="/">
+                        <option value="{{cityAirportList[0]}}" selected>{{cityAirportList[0]}}</option>
+                        {% for i in cityAirportList[1:] %}
+                        <option value="{{i}}">{{i}}</option>"
+                        {% endfor %}
+                    </select>
+                </label>
+                <label>flight date
+                    <input type="date" id="flightDate" name="flightDate" min="2020-12-01" max="2025-12-31">
+                </label>
+                <input id="flightNum" name="flightNum" placeholder="flight number">
+                <button type="button">Search</button>
+                <!-- <input type="submit" value="search"> -->
+            </form>
+        </center>
+    </form>
+    <div id="res" height='200px'>
+
+    </div>
+
+
+</body>
+</html>

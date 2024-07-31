@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="/static/style.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script src="static/editResult.js"></script>
+</head>
+
+<body>
+    <center>
+        <h1> Flight Status Change Form </h1>
+        <form action="/staffChangeFlight" method="POST">
+            <div class="container">
+                <label>Flight Number : </label>
+                <input type="text" placeholder="Enter Flight Number" name="flight_num">
+                <label>Change Status To:</label>
+                <select name="status">
+                    <option value="Upcoming" selected>Upcoming</option>
+                    <option value="Delayed">Delayed</option>
+                    <option value="In-progres">In-progress</option>
+                    <option value="Cancelled">Cancelled</option>
+                </select>
+                <button id="button1" type="submit">Submit</button>
+                <!-- <button onclick='location.href=/staffHomePage'>GO BACK</button> -->
+            </div>
+            
+        </form>
+        <div style="width: 500px;padding: 16px;"> <a href=staffHomePage><button>GO BACK</button></a></div>
+       
+        
+    </center>
+</body>
+
+</html>

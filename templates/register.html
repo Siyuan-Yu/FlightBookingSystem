@@ -1,0 +1,135 @@
+<HTML>
+
+<head>
+    <link rel="stylesheet" href="/static/style.css">
+    <script>
+        function defaultfun(){
+            document.getElementById('customer').style.display = 'block';
+            document.getElementById('agent').style.display = 'none';
+            document.getElementById('staff').style.display = 'none';
+        }
+        defaultfun();
+        function ChangeDropdowns(value) {
+            if (value == "customer") {
+                document.getElementById('customer').style.display = 'block';
+                document.getElementById('agent').style.display = 'none';
+                document.getElementById('staff').style.display = 'none';
+            } else if (value == "agent") {
+                document.getElementById('agent').style.display = 'block';
+                document.getElementById('staff').style.display = 'none';
+                document.getElementById('customer').style.display = 'none';
+            } else if (value == "staff") {
+                document.getElementById('agent').style.display = 'none';
+                document.getElementById('staff').style.display = 'block';
+                document.getElementById('customer').style.display = 'none';
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <div id="alert" style='display:none;'>
+        <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+        {{error}}
+    </div>
+    <a href="/" style="position: fixed; top:30px;left:100px;"> <button type="button" class="cancelbtn"> Cancel</button>  </a>
+    <center>
+        <form action="/registerHandle" method="POST">
+            <label for="user_type"><b>CHOOSE YOUR IDENTITY</b></label>
+            <br>
+            <select name="user_type" id="user_type" onchange="ChangeDropdowns(this.value);">
+                <option value='customer' selected>Customer</option>
+                <option value="agent">Booking Agent</option>
+                <option value="staff">Airline Staff</option>
+            </select>
+            <br>
+            <div id="customer">
+                <label for="email"><b>Email</b></label>
+                <input type="text" placeholder="Enter Email" name="email" id="email">
+                <br>
+                <label for="username"><b>Username</b></label>
+                <input type="text" placeholder="Enter Username" name="username" id="username">
+                <br>
+                <label for="password"><b>Password</b></label>
+                <input type="password" placeholder="Enter Password" name="password" id="password">
+                <br>
+                <label for="building_number"><b>Building Number</b></label>
+                <input type="text" name="building_number" id="building_number">
+                <br>
+                <label for="street"><b>Street</b></label>
+                <input type="text" name="street" id="street">
+                <br>
+                <label for="city"><b>City</b></label>
+                <input type="text" name="city" id="city">
+                <br>
+                <label for="state"><b>State</b></label>
+                <input type="text" name="state" id="state">
+                <br>
+                <label for="phone_number"><b>Phone</b></label>
+                <input type="text" name="phone_number" id="phone_number">
+                <br>
+                <label for="passport_number"><b>Passport Number</b></label>
+                <input type="text" name="passport_number" id="passport_number">
+                <br>
+                <label for="passport_country"><b>Passport Country</b></label>
+                <input type="text" name="passport_country" id="passport_country">
+                <br>
+                <label for="passport_expiration"><b>Passport Expiration</b></label>
+                <input type="date" name="passport_expiration" id="passport_expiration">
+                <br>
+                <label for="date_of_birth"><b>Date Of Birth</b></label>
+                <input type="date" name="date_of_birth" id="date_of_birth">
+            </div>
+
+            <div id="agent" style="display: none;">
+                <label for="email"><b>Email</b></label>
+                <input type="text" placeholder="Enter Email" name="agemail" id="agemail">
+                <br>
+
+                <label for="password"><b>Password</b></label>
+                <input type="password" placeholder="Enter Password" name="agpassword" id="agpassword">
+                <br>
+                <label for="booking_agent_id"><b>Agent ID</b></label>
+                <input type="text" name="booking_agent_id" id="booking_agent_id">
+
+            </div>
+
+            <div id="staff" style="display: none;">
+                <label for="username"><b>Username</b></label>
+                <input type="text" placeholder="Enter Username" name="stusername" id="stusername">
+                <br>
+                <label for="password"><b>Password</b></label>
+                <input type="password" placeholder="Enter Password" name="stpassword" id="stpassword">
+                <br>
+                <label for="first_name"><b>First Name</b></label>
+                <input type="text" name="first_name" id="first_name">
+                <br>
+                <label for="last_name"><b>Last Name</b></label>
+                <input type="text" name="last_name" id="last_name">
+
+                <br>
+                <label for="stdate_of_birth"><b>Date Of Birth</b></label>
+                <input type="date" name="stdate_of_birth" id="stdate_of_birth">
+                <br>
+                <label for="airline_name"><b>Airline</b></label>
+                <input type="text" name="airline_name" id="airline_name">
+
+            </div>
+            <hr>
+
+            <p>By creating an account you agree to our <a href="#">Terms & Privacy</a>.</p>
+            <button type="submit" class="registerbtn">Register</button>
+        </form>
+        <div class="container signin">
+            <p>Already have an account? <a href="#">Sign in</a>.</p>
+        </div>
+    </center>
+
+</body>
+<script>
+    if ('{{error}}'.length > 3) {
+        document.getElementById('alert').style.display = 'block';
+    }
+</script>
+
+</HTML>

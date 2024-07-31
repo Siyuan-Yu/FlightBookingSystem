@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body>
+    <div style='margin-top: 10%;'>
+        <center>
+            <h1>top3 destination in {{b}}</h1>
+        </center>
+        <br>
+        <table class="table table-striped" style="width:100%;text-align: center;">
+            <tr>
+                <th>CITY</th>
+                <th>#OF TICKETS</th>
+            </tr>
+
+            {% for row in range(a|length)  %}
+            <tr>
+                <td>{{ a[row].airport_city }}</td>
+                <td>{{ a[row].traffic_num }}</td>
+            </tr>
+            {% endfor %}
+
+        </table>
+        <center>
+        
+        <a href="/staffViewReport"><button class='longbutton'>GO BACK</button></a>
+        </center> 
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,135 @@
+app.py - flask code
+
+static:
+    addFlight.js - ajax setting for /staffAddAirport, /staffAddAirplane, /staffProcessCustomers.
+    baCommissionSearch.js - ajax setting for /baCommissionSearch.
+    baSearch.js - ajax setting for showing search result.
+    cusSearch.js - ajax setting for showing search result.
+    staffSearch.js - ajax setting for showing search result.
+    upComingSearch.js - ajax setting for showing search result.
+    cusTrackSearch.js - ajax setting for showing search result.
+    publicSearch.js - ajax setting for showing search result.
+    editResult.js - ajax setting for showing staff editing result.
+    style.css - css style sheet
+
+templates:
+
+    index.html	
+    --homepage for the system
+    
+    agentLoginPage.html	
+    staffLoginPage.html
+    customerLoginPage.html
+    --generate login pages for different people:
+
+    register.html
+    --register page for all people
+
+    publicSearch.html
+    --show public search result
+    
+--CUSTOMER--
+    cusHomePage.html
+    --home page of customer
+
+    cusPurchase.html
+    --page for customer to purchase
+
+    cusPurchaseResult.html
+    --show purchase result
+
+    cusSearch.html
+    --show search result via ajax
+    
+    cusTrackSearch.html
+    --show track my spending result
+
+    cusTrackSpending.html
+    --show track spending homepage
+    	
+    cusViewFlight.html
+    --show upcoming flights
+
+--Booking Agent--
+    baHomePage.html
+    --home page of booking agent
+
+    baSearch.html
+    --show flight search result
+
+    baViewMyFlight.html	
+    --show upcoming flights
+
+    baCommissionSearch.html	
+    --show BA Commission search result
+
+    baViewCommission.html
+    --show BA Commission
+
+    baPurchaseDetail.html
+    --for BA to fill out purchase details
+
+    baPurchaseProcess.html
+    --show flight information to purchase
+
+    baPurchaseResult.html
+    --show purchase result
+
+    baTopCustomers.html	
+    --show BA top Customers
+
+    bar_chart1.html, bar_chart2.html		
+    --show Commission bar chart
+
+--STAFF--
+    staffAddAirport.html
+    --show airport adding page	
+
+    staffChangeFlight.html
+    --show airport changing page
+    
+    staffCreateFlight.html
+    --show flight creating page
+
+    staffCreateResult.html
+    --show flight creating result
+    	
+    staffHomePage.html
+    --home page of staff
+    		
+    editFlight.html	
+    --show flight editing page
+
+    staffSearch.html
+    --show flight search result
+    
+    editResult.html	
+    --show editing result
+    	
+    staffViewBA.html
+    --show top BA information
+
+    editSystem.html
+    --show system editing page
+
+    staffViewCustomers.html
+    --show top customers
+    	
+    staffViewReport.html
+    --show other report options
+
+    bar.html, pie.html
+    --show ticket amount in bar chart and show income result in pie chart		
+    	
+    upComingSearch.html
+    --show upcoming flight search result
+    		
+    view.html
+    --show view options
+
+    reportResult.html
+    --show top destinations
+    	
+    staffAddAirplane.html
+    --page for staff to add airplane
+    

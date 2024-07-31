@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>baViewMyFlight</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script src="static/baSearch.js"></script>
+</head>
+<body>
+	<a href="/logout">Log Out</a> <br>
+	<a href='/baHomePage'>Back to Home Page</a>
+    <h1>This is a Booking Agent View Flight Page</h1>
+
+	<table class="table table-striped" style="width:100%;text-align: center;">
+        <tr>
+            {% for col in range(th1|length)  %}
+
+            <th>{{ th1[col] }}</th>
+
+            {% endfor %}
+        </tr>
+
+        {% for row in range(flight_data|length)  %}
+        <tr>
+            <td>{{ flight_data[row].airline_name }}</td>
+            <td>{{ flight_data[row].flight_num }}</td>
+            <td>{{ flight_data[row].departure_airport}}</td>
+            <td>{{ flight_data[row].departure_time}}</td>
+            <td>{{ flight_data[row].arrival_airport}}</td>
+            <td>{{ flight_data[row].arrival_time}}</td>
+            <td>{{ flight_data[row].price}}</td>
+            <td>{{ flight_data[row].status}}</td>
+            <td>{{ flight_data[row].customer_email}}</td>
+        </tr>
+        {% endfor %}
+
+    </table>
+
+
+    <br>
+    <br>
+    <br>
+
+    <div>
+        <center>
+            <h1>Search Flights</h1>
+            <form class="publicSearch" > 
+                <label>Departure City
+                    <select name="departureCity" id="departureCity" method="GET" action="/">
+                        <option value="{{cityAirportList[0]}}" selected>{{cityAirportList[0]}}</option>
+                        {% for i in cityAirportList[1:] %}
+                        <option value="{{i}}">{{i}}</option>"
+                        {% endfor %}
+                    </select>
+                </label>
+                <label>Arrival City
+                    <select name="arrivalCity" id="arrivalCity" method="GET" action="/">
+                        <option value="{{cityAirportList[0]}}" selected>{{cityAirportList[0]}}</option>
+                        {% for i in cityAirportList[1:] %}
+                        <option value="{{i}}">{{i}}</option>"
+                        {% endfor %}
+                    </select>
+                </label>
+                <label>flight date from
+                    <input type="date" id="date1" name="date1" min="2020-12-01" max="2025-12-31">
+                </label>
+                <label>flight date to
+                    <input type="date" id="date2" name="date2" min="2020-12-01" max="2025-12-31">
+                </label>
+                <input id="flightNum" name="flightNum" placeholder="flight number">
+                <button type="button" id = "button">Search</button>
+                <!-- <input type="submit" value="search"> -->
+            </form>
+        </center>
+
+
+    </div>
+
+    <br>
+
+    <div id="res" height='200px'>
+    </div>
+    
+</body>
+</html>

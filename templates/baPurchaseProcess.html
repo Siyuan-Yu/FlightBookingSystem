@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>baPurchaseProcess</title>
+</head>
+<body>
+    <a href="/logout">Log Out</a> <br>
+    <a href='/baHomePage'>Back to Home Page</a>
+    <h1>This is a baPurchasePorcess Page</h1>
+
+    <form action="baPurchaseDetail". method="get">
+        <h3>There are {{ available_ticket_num }} tickets available.</h3>
+    </form>
+    
+    <form action="/baPurchaseProcess", method = "post">
+        <label>airline_name</label> <input type="text" name="airline_name"> <br>
+        <label>flight_num</label> <input type="text" name="flight_num"> <br>
+        <label>cust_email</label> <input type="text" name="cust_email"> <br>
+        <a href="/baPurchaseResult"><input type="submit" value="Purchase"> </a> <br>
+    </form>
+</body>
+</html>

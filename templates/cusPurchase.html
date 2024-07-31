@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>cusPurchase</title>
+</head>
+<body>
+    <a href="/logout">Log Out</a> <br>
+    <a href="/cusHomePage">Back to Customer HomePage</a> <br>
+    <h1>Customer Purchase Page</h1>
+
+    <h1>Hi, {{name[0]}}, Please Choose the Ticket you want to Buy</h1>
+    <form action = "/cusPurchase" method="post">
+        
+        <label>AirlineCompany</label> <input type="text" name="AirlineCompany"> <br>
+        <label>FlightNumber</label> <input type="text" name="FlightNumber"> <br>
+        <input type="submit" value="submit"> <br>
+    </form>
+</body>
+</html>

@@ -1,0 +1,64 @@
+<HTML>
+
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script src="static/publicSearch.js"></script>
+    <style>
+        #navigator {
+            margin: 10px;
+            padding: 10px;
+        }
+
+        a {
+            padding: 10px;
+        }
+
+    </style>
+</head>
+
+<BODY>
+    <div>
+        <a href='/register'>Register</a>
+        <label id="navigator">
+            Login As:
+            <a href='/customerLoginPage'>Customer</a>
+            <a href='/agentLoginPage'>Booking Agent</a>
+            <a href='/staffLoginPage'>Airline Staff</a>
+        </label>
+    </div>
+
+    <form method="POST">
+        <center>
+            <H1>Search flights</H1> <br>
+            <form class="publicSearch">
+                <label>Departure City
+                    <select name="departureCity" id="departureCity" method="GET" action="/">
+                        <option value="{{cityAirportList[0]}}" selected>{{cityAirportList[0]}}</option>
+                        {% for i in cityAirportList[1:] %}
+                        <option value="{{i}}">{{i}}</option>"
+                        {% endfor %}
+                    </select>
+                </label>
+                <label>Arrival City
+                    <select name="arrivalCity" id="arrivalCity" method="GET" action="/">
+                        <option value="{{cityAirportList[0]}}" selected>{{cityAirportList[0]}}</option>
+                        {% for i in cityAirportList[1:] %}
+                        <option value="{{i}}">{{i}}</option>"
+                        {% endfor %}
+                    </select>
+                </label>
+                <label>flight date
+                    <input type="date" id="flightDate" name="flightDate" min="2020-12-01" max="2025-12-31">
+                </label>
+                <input id="flightNum" name="flightNum" placeholder="flight number">
+                <button type="button">Search</button>
+                <!-- <input type="submit" value="search"> -->
+            </form>
+        </center>
+    </form>
+    <div id="res" height='200px'>
+
+    </div>
+</BODY>
+
+</HTML>

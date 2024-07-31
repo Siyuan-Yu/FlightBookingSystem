@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>upComingSearch</title>
+</head>
+<body>
+    <table class="table table-striped" style="width:100%;text-align: center;">
+    <tr>
+        {% for col in range(th|length)  %}
+
+        <th>{{ th[col] }}</th>
+
+        {% endfor %}
+    </tr>
+
+    {% for row in range(flight_data|length)  %}
+    <tr>
+        <td>{{ flight_data[row].airline_name }}</td>
+        <td>{{ flight_data[row].flight_num }}</td>
+        <td>{{ flight_data[row].departure_airport}}</td>
+        <td>{{ flight_data[row].departure_time}}</td>
+        <td>{{ flight_data[row].arrival_airport}}</td>
+        <td>{{ flight_data[row].arrival_time}}</td>
+        <td>{{ flight_data[row].price}}</td>
+        <td>{{ flight_data[row].status}}</td>
+        <td>{{ flight_data[row].customter_email}}</td>
+    </tr>
+    {% endfor %}
+</table>
+</body>
+</html>

@@ -1,0 +1,473 @@
+
+
+Sql statements and Explanations
+
+
+
+【PUBLIC USE】
+/index:
+    SELECT * FROM airport; 
+-- get all airport list as a dropdown
+
+/publicSearch - similar to other search flight sql statement
+    SELECT airline_name,flight_num,departure_airport,departure_time,
+                arrival_airport,arrival_time,price,status FROM flight
+    flag = True
+    if departureCity != "" and departureCity != 'Any city':
+        dept_airport = departureCity.split('-')
+        dept_airport = dept_airport[-1]
+        if flag:
+            query += "WHERE departure_airport = '%s' " % dept_airport
+            flag = False
+
+    if flightNum != "" and flightNum != 'Any':
+        if flag:
+            query += "WHERE flight_num = %s " % flightNum
+            flag = False
+        else:
+            query += "AND flight_num = %s " % flightNum
+
+    if arrivalCity != "" and arrivalCity != 'Any city':
+        arriv_airport = arrivalCity.split('-')
+        arriv_airport = arriv_airport[-1]
+        if flag:
+            query += "WHERE arrival_airport = '%s' " % arriv_airport
+            flag = False
+        else:
+            query += "AND arrival_airport = '%s' " % arriv_airport
+
+    if flightDate != "":
+        if flag:
+            query += "WHERE DATE(departure_time) = '%s' " % flightDate
+        else:
+            query += "AND DATE(departure_time) = '%s' " % flightDate   
+-- Search for flights based on conditions
+
+/register - similar to other cases' register statment, after duplication is checked.
+    query = "INSERT INTO customer VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
+    cursor.execute(query, (email, username, hashed_pwd, building_number, street, city,
+                               state, phone_number, passport_number, passport_expiration,
+                               passport_country, date_of_birth))
+--Insert new registered users
+
+/loingauth - similar to other cases' login check statement:
+    cursor.execute("SELECT * FROM customer WHERE email = %s", email)
+--Check if the form data posted by login page is the same as data from database system.
+
+
+
+
+【Customer Using Case】
+
+    1. CusHomePage.html
+
+        query = '''SELECT name from customer where email = %s’’'. This query is to select the name of the logged in 
+        query = "SELECT * FROM airport;” This query is to select all the airport information.
+
+    2. cusViewFlight.html
+
+        query = "SELECT customer.name FROM customer WHERE email = %s;” This query is to select the name of the logged in
+        query = '''SELECT f.airline_name,f.flight_num,f.departure_airport,f.departure_time,
+                            f.arrival_airport,f.arrival_time,f.price,f.status
+                            FROM flight AS f, ticket AS t, purchases AS p
+                            WHERE p.customer_email = %s
+                            AND f.status = "Upcoming"
+                            AND p.ticket_id = t.ticket_id
+                            AND (t.airline_name,t.flight_num) = (f.airline_name,f.flight_num);'''
+            This query is to select the flight information the Customer Purchased, and the status is Upcoming 
+
+
+        query = '''SELECT f.airline_name,f.flight_num,f.departure_airport,f.departure_time,
+                    f.arrival_airport,f.arrival_time,f.price,f.status
+                    FROM flight AS f, ticket AS t, purchases AS p
+                    WHERE p.customer_email = %(email)s
+                    AND f.status = "Upcoming"
+                    AND p.ticket_id = t.ticket_id
+                    AND (t.airline_name,t.flight_num) = (f.airline_name,f.flight_num) '''
+            This is also the flight information the Customer Purchased, and the status is Upcoming, but this is used to actively search(in AJAX)
+
+    3. cusPurchase.html
+
+        query = '''SELECT name from customer where email = %s'''
+        This is to select the name of the logged in customer
+
+        cursor.execute("SELECT * FROM flight WHERE airline_name = %s AND flight_num = %s AND status = 'Upcoming';",
+        This is to select the flight information that is available
+
+        query = '''SELECT COUNT(ticket_id) as num FROM ticket WHERE airline_name = %s
+                    AND flight_num = %s
+                    AND ticket_id in (SELECT ticket_id FROM purchases);'''
+        This query is to search the number of ticket that has already been purchased with the entered airline_name and flight_num
+
+        query = '''SELECT airplane_id as plane_id FROM flight WHERE airline_name = %s
+        AND flight_num = %s;'''
+        This quesry is to select the airplane_id with provided information
+
+        query = '''SELECT ticket_id as ticket_id
+        from ticket 
+        order by ticket_id DESC limit 1'''
+        This query is to find the biggest ticket_id, so that we can add one when there needs to purchase one tickect.
+
+        query = '''SELECT DISTINCT airplane.seats as seats_num from airplane, flight where flight.airplane_id = airplane.airplane_id and flight.airplane_id = %s'''
+
+        This quesry is to look for the seats available for the plane, if the number of already sold ticket eqauls to or larger than the seats number, it would not be sold to customer.
+
+
+        query1 = '''
+            INSERT INTO ticket (ticket_id, airline_name, flight_num) 
+                    VALUES(%(itd)s, %(airline)s, %(fn)s);'''
+            
+        query2 = '''INSERT INTO purchases (ticket_id,customer_email,purchase_date) 
+                    VALUES(%(itd)s, %(email)s, %(date)s);'''
+
+        Thexe two queries are to insert a ticket and purchase a tickect when the seats numebr are availbe.
+
+        
+        query = ''' SELECT purchases.ticket_id as x from ticket, purchases 
+                WHERE ticket.ticket_id = purchases.ticket_id 
+                AND purchases.customer_email = %(email)s 
+                AND ticket.airline_name = %(airline)s
+                AND ticket.flight_num = %(fn)s; '''
+        This query is to find that whether the customer has bought the tickect in the past, if she/he once bought, she/he would not be able to purchase it.
+        
+    4. cusTrackSpending.html
+
+        query = '''SELECT SUM(price) AS total FROM flight,purchases,ticket
+                        WHERE purchases.customer_email = %s
+                        AND year(purchases.purchase_date) = %s
+                        AND purchases.ticket_id = ticket.ticket_id
+                        AND (ticket.airline_name,ticket.flight_num) = (flight.airline_name,flight.flight_num)
+                        '''
+        This query is to Select the total number of monery spent for the suctomer. 
+
+
+
+【Booking Agent Using Case】
+
+    1. baHomePage.html
+        query = "SELECT * FROM airport;"
+        This is to select all the airports
+
+    2. baPurchase.html
+        query = '''SELECT booking_agent_id as ba_id FROM booking_agent WHERE email = %s'''
+        This is to select the ba_id
+
+        cursor.execute("SELECT * FROM flight WHERE airline_name = %s AND flight_num = %s AND status = 'Upcoming';",
+        This is to select the Upcoming plane, which are availbe for purchases.
+
+        query = '''SELECT COUNT(ticket_id) as num FROM ticket WHERE airline_name = %s
+        AND flight_num = %s
+        AND ticket_id in (SELECT ticket_id FROM purchases);'''
+
+        This query is to search the number of ticket that has already been purchased with the entered airline_name and flight_num
+
+        query = '''SELECT airplane_id as plane_id FROM flight WHERE airline_name = %s
+                AND flight_num = %s;'''
+        This quesry is to select the airplane_id with provided information
+
+        query = '''SELECT ticket_id as ticket_id
+                from ticket 
+                order by ticket_id DESC limit 1'''
+        This query is to find the biggest ticket_id, so that we can add one when there needs to purchase one tickect.
+
+        query = '''SELECT DISTINCT airplane.seats as seats_num from airplane, flight where flight.airplane_id = airplane.airplane_id and flight.airplane_id = %s'''
+
+        This quesry is to look for the seats available for the plane, if the number of already sold ticket eqauls to or larger than the seats number, it would not be sold to customer.
+
+    query1 = '''
+        INSERT INTO ticket (ticket_id, airline_name, flight_num) 
+                VALUES(%(itd)s, %(airline)s, %(fn)s);'''
+            
+    query2 = '''INSERT INTO purchases (ticket_id,customer_email,purchase_date, booking_agent_id) 
+                VALUES(%(itd)s, %(email)s, %(date)s, %(ba_id)s);'''
+
+        These two queries are to insert a ticket and purchase a tickect when the seats numebr are availbe. I added one condition for Booking_Agent's id.
+
+    query = ''' SELECT purchases.ticket_id as x from ticket, purchases 
+    WHERE ticket.ticket_id = purchases.ticket_id 
+    AND purchases.customer_email = %(email)s 
+    AND ticket.airline_name = %(airline)s
+    AND ticket.flight_num = %(fn)s; '''
+
+        This query is to find that whether the customer has bought the tickect in the past, if she/he once bought, she/he would not be able to purchase it.
+
+    3. baCommissionSearch.html
+
+    '''SELECT SUM(price*0.1) AS total_commission FROM ticket, purchases, flight
+                    WHERE ticket.ticket_id = purchases.ticket_id
+                    AND (ticket.airline_name, ticket.flight_num) = (flight.airline_name, flight.flight_num)
+                    AND purchases.booking_agent_id = (SELECT booking_agent_id FROM booking_agent WHERE email = '%s')
+                    AND  purchases.purchase_date >= "%s"
+                    AND purchases.purchase_date <= "%s" ;''' %(email,start_date,end_date)
+
+    This is to select the total commission for booking_agent 
+
+    query = '''SELECT COUNT(ticket_id) sold_ticket_num FROM purchases 
+            WHERE booking_agent_id = (SELECT booking_agent_id FROM booking_agent WHERE email = '%s')
+            AND  purchase_date >= "%s"
+            AND purchase_date <= "%s";''' %(email,start_date,end_date)
+    
+    This is to show the total number of ticket sold
+
+    4. baTopCustomer.html
+    query = '''SELECT customer_email, name, COUNT(ticket_id) AS ticket_num
+            FROM purchases, customer
+            WHERE customer.email = purchases.customer_email
+            AND booking_agent_id = (SELECT booking_agent_id FROM booking_agent WHERE email = %s)
+            AND purchase_date between DATE_SUB(CURRENT_DATE(), INTERVAL 180 DAY) and CURRENT_DATE()
+            GROUP BY customer_email
+            ORDER BY ticket_num DESC
+            LIMIT 5;'''
+        
+        This is to find the top 5 customers by tickect number sold 
+
+    query = '''SELECT customer_email, name, SUM(price*0.1) total_commission
+            FROM purchases, customer, flight, ticket
+            WHERE purchases.booking_agent_id = (SELECT booking_agent_id FROM booking_agent 
+                                                    WHERE email = %s)
+            AND customer.email = purchases.customer_email
+            AND purchases.ticket_id = ticket.ticket_id
+            AND (ticket.airline_name, ticket.flight_num) = (flight.airline_name, flight.flight_num)
+            AND purchase_date between DATE_SUB(CURRENT_DATE(), INTERVAL 180 DAY) and CURRENT_DATE()
+            GROUP BY customer_email
+            ORDER BY total_commission DESC
+            LIMIT 5;'''
+        
+        This is to find the top 5 customers by total commission
+
+
+    5. baViewMyFlight.html
+
+    '''SELECT p.customer_email, f.airline_name,f.flight_num,f.departure_airport,f.departure_time,
+                    f.arrival_airport,f.arrival_time,f.price,f.status
+                    FROM flight AS f, ticket AS t, purchases AS p
+                    WHERE p.booking_agent_id = %s
+                    AND f.status = "Upcoming"
+                    AND p.ticket_id = t.ticket_id
+                    AND (t.airline_name,t.flight_num) = (f.airline_name,f.flight_num);'''
+    This is to find the flight information the booking agent has booked
+
+
+
+
+
+
+【STAFF CASE】
+/staffHomepage:
+    SELECT airline_name FROM airline_staff WHERE username = %s;
+--get airline he works for
+
+    SELECT * FROM airport;
+    query = '''SELECT airline_name,flight_num,departure_airport,departure_time,
+                    arrival_airport,arrival_time,price,status
+                    FROM flight
+                    WHERE airline_name = %s and date(departure_time) between CURRENT_DATE() and DATE_ADD(CURRENT_DATE(), INTERVAL 30 DAY) ;'''
+    cursor.execute(query, airline_name)
+    query = '''SELECT * FROM airplane WHERE airline_name = %s;'''
+    cursor.execute(query, airline_name)
+--get flight data to view upcoming flight and get ready for flight searching
+
+insertname = {
+            'airline_name': airline_name,
+            'date1': date1,
+            'date2': date2,
+        }
+        query = '''SELECT airline_name,flight_num,departure_airport,departure_time,
+                    arrival_airport,arrival_time,price,status FROM flight WHERE airline_name=%(airline_name)s'''
+
+        if departureCity != "" and departureCity != 'Any city':
+            dept_airport = departureCity.split('-')
+            dept_airport = dept_airport[-1]
+            query += "AND departure_airport = '%s' " % dept_airport
+
+        if flightNum != "" and flightNum != 'Any':
+            query += "AND flight_num = %s " % flightNum
+
+        if arrivalCity != "" and arrivalCity != 'Any city':
+            arriv_airport = arrivalCity.split('-')
+            arriv_airport = arriv_airport[-1]
+            query += "AND arrival_airport = '%s' " % arriv_airport
+
+        if date1 != "" and date2 != "":
+            query += "AND DATE(departure_time) BETWEEN %(date1)s AND %(date2)s "
+
+        cursor.execute(query, insertname)
+--Search flights based on conditions
+
+    query = '''SELECT name,email,t.flight_num   
+                    FROM customer c,ticket t,purchases p
+                    WHERE p.ticket_id = t.ticket_id AND p.customer_email=c.email AND flight_num =%s'''
+        cursor.execute(query, flightNum)
+--Search customer based on flight number
+
+/staffChangeFlight:
+    query = '''UPDATE flight SET status = %s
+                    WHERE airline_name = %s
+                    AND flight_num = %s ;'''
+        cursor = mysql.cursor()
+        cursor.execute(query,(status,airline_name,flight_num))
+        mysql.commit()
+        query = '''SELECT airline_name,flight_num,departure_airport,departure_time,
+                    arrival_airport,arrival_time,price,status 
+                    FROM flight 
+                    WHERE airline_name = %s;'''
+        cursor.execute(query,airline_name)
+--update flight status and show the result
+
+/staffCreatFlight:
+    #check flight_num duplicate
+        query = '''SELECT * FROM flight WHERE airline_name = %s AND flight_num = %s;'''
+        cursor.execute(query,(airline_name,flight_num))
+     #check if airport inputs are valid
+        query = '''SELECT airport_name FROM airport'''
+    #check if plane_id is valid
+        query = '''SELECT * FROM airplane WHERE airline_name = %s AND airplane_id = %s;'''
+        cursor.execute(query,(airline_name,airplane_id))
+    query = '''INSERT INTO flight VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s);'''
+        cursor.execute(query,(airline_name,
+                                flight_num,
+                                departure_airport,
+                                departure_time,
+                                arrival_airport,
+                                arrival_time,
+                                price,
+                                status,
+                                airplane_id))
+-- Add flight
+
+/staffAddAirport
+    query = "SELECT airport_name, airport_city FROM airport;"
+        cursor = mysql.cursor()
+        cursor.execute(query)
+        d = cursor.fetchall()
+        for e in d:
+            if e["airport_name"] == airport_name:
+                return jsonify({"data":"Error: Airport name already exists!"})
+        query = "INSERT INTO airport VALUES(%s,%s);"
+        cursor.execute(query,(airport_name,airport_city))
+--check duplication and add airport
+
+/staffAddAirplane
+    query = "SELECT airline_name,airplane_id FROM airplane;"
+        cursor.execute(query)
+        d = cursor.fetchall()
+        for e in d:
+            if e["airline_name"] == airline_name and int(e["airplane_id"]) == int(airplane_id):
+                return jsonify({"data":"Error: airplane_id duplicate"})
+
+        query = "INSERT INTO airplane VALUES(%s,%s,%s);"
+        cursor.execute(query,(airline_name,airplane_id,seats))
+--check duplication and add airplane
+
+/staffViewBa:
+    query = '''SELECT b.email, COUNT(b.email) num_of_ticket
+                    FROM booking_agent b, ticket t, purchases p
+                    WHERE p.booking_agent_id = b.booking_agent_id
+                    AND p.ticket_id = t.ticket_id
+                    AND t.airline_name = %s
+                    AND MONTH(p.purchase_date) = %s
+                    AND YEAR(p.purchase_date) = %s
+                    GROUP BY b.email
+                    ORDER BY num_of_ticket DESC
+                    LIMIT 5;'''
+--top BA last MONTH
+
+    query = '''SELECT b.email, COUNT(b.email) num_of_ticket
+                            FROM booking_agent b, ticket t, purchases p
+                            WHERE p.booking_agent_id = b.booking_agent_id
+                            AND p.ticket_id = t.ticket_id
+                            AND t.airline_name = %s
+                            AND YEAR(p.purchase_date) = %s
+                            GROUP BY b.email
+                            ORDER BY num_of_ticket DESC
+                            LIMIT 5;'''
+        cursor.execute(query, (airline_name,year))
+    query = '''SELECT b.email, SUM(f.price*0.1) commission
+                        FROM flight f, purchases p, booking_agent b, ticket t
+                        WHERE b.booking_agent_id = p.booking_agent_id
+                        AND p.ticket_id = t.ticket_id
+                        AND (t.airline_name,t.flight_num) = (f.airline_name,f.flight_num)
+                        AND YEAR(p.purchase_date) = %s
+                        AND t.airline_name = %s
+                        GROUP BY b.email
+                        ORDER BY commission DESC
+                        LIMIT 5;'''
+        cursor.execute(query,(year,airline_name))
+--top BA last year
+
+/staffViewCustomer:
+    query = '''SELECT c.name,p.customer_email,COUNT(*) ticket_num
+                    FROM purchases p , ticket t,customer c
+                    WHERE p.ticket_id = t.ticket_id
+                    AND c.email = p.customer_email
+                    AND t.airline_name = (SELECT airline_name FROM airline_staff WHERE username = %s)
+                    AND YEAR(p.purchase_date) = %s
+                    GROUP BY p.customer_email
+                    ORDER BY ticket_num DESC
+                    LIMIT 1;'''
+        cursor = mysql.cursor()
+        cursor.execute(query,(username,year))
+--get top customers
+
+    query = '''SELECT distinct f.airline_name,f.flight_num,departure_airport,departure_time,
+                    arrival_airport,arrival_time,price,status 
+                    FROM flight f, ticket t, purchases p
+                    WHERE (t.airline_name,t.flight_num) = (f.airline_name,f.flight_num)
+                    AND p.ticket_id = t.ticket_id
+                    AND p.customer_email = %s
+                    AND f.airline_name = (SELECT airline_name FROM airline_staff 
+                                          WHERE username = %s); '''
+        cursor = mysql.cursor()
+--view customer flight based on email
+
+/pie1: similar to pie2
+    query1 = '''SELECT A.direct, B.indirect FROM (SELECT sum(D.ticketcnt*F.price) AS direct 
+        FROM (SELECT count(t.ticket_id) as ticketcnt,flight_num FROM ticket t JOIN flight USING (flight_num) 
+        WHERE t.ticket_id in (SELECT ticket_id FROM purchases WHERE booking_agent_id IS Null 
+        AND purchase_date between DATE_SUB(CURRENT_DATE(), INTERVAL 30 DAY) and CURRENT_DATE()) 
+        GROUP BY flight_num) D JOIN flight F USING(flight_num)) A, (SELECT sum(D.ticketcnt*F.price) 
+        AS indirect FROM (SELECT count(t.ticket_id) as ticketcnt,flight_num 
+        FROM ticket t JOIN flight USING (flight_num) WHERE t.ticket_id in (SELECT ticket_id FROM purchases 
+        WHERE booking_agent_id IS NOT Null AND purchase_date between DATE_SUB(CURRENT_DATE(), INTERVAL 30 DAY) 
+        and CURRENT_DATE()) GROUP BY flight_num) D JOIN flight F USING(flight_num)) B'''
+--get direct/indirect income
+
+/top3y: similar to /top6m
+    query = '''SELECT airport_city, COUNT(*) traffic_num
+                            FROM airport a, flight f,ticket t
+                            WHERE a.airport_name = f.arrival_airport
+                            AND (f.airline_name, f.flight_num) = (t.airline_name,t.flight_num)
+                            AND f.status != "Cancelled"
+                            AND f.airline_name = %s
+                            AND year(f.arrival_time) = %s
+                            AND t.ticket_id in (SELECT ticket_id FROM purchases)
+                            GROUP BY airport_city
+                            ORDER BY traffic_num DESC
+                            LIMIT 3;'''
+        cursor.execute(query, (airline_name, last_year))
+--get top destinations
+
+/monthticket:
+
+    #get month-wise tickets sold num
+    query = '''SELECT COUNT(t.ticket_id) total_ticket_num
+                    FROM ticket t, purchases p
+                    WHERE airline_name = (SELECT airline_name FROM airline_staff WHERE username = %s)
+                    AND t.ticket_id = p.ticket_id
+                    AND YEAR(p.purchase_date) = %s
+                    AND MONTH(p.purchase_date) = %s;'''
+    #ttl TIcket    
+    query = '''SELECT COUNT(t.ticket_id) total_ticket_num
+                    FROM ticket t, purchases p
+                    WHERE airline_name = (SELECT airline_name FROM airline_staff WHERE username = %s)
+                    AND t.ticket_id = p.ticket_id
+                    AND YEAR(p.purchase_date) = %s;'''
+    cursor.execute(query,(username,year))
+--get monthwise ticket and total tickets
+
+
+
+
+
+
+

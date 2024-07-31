@@ -1,0 +1,10 @@
+Selina:
+    public use case:
+        index page,
+        Registration,
+        Login
+    Staff Case;
+
+Siyuan:
+    Customer Case;
+    Booking Agent Case;

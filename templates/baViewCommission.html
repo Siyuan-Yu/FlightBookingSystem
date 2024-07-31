@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>baViewCommission</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script src="static/baCommissionSearch.js"></script>
+</head>
+
+<body>
+	<a href="/logout">Log Out</a> <br>
+    <a href='/baHomePage'>Back to Home Page</a>
+
+		<h1  style="width:100%;text-align: center;">View My Commission</h1></br></br>
+		<h2>Commmission Rate for the Booking Agent is 10%</h2>
+		<h3 style="width:100%;text-align: center;">The Commissions in the last 30 days</h3>
+	<table class="table"  style="width:100%;text-align: center;">
+		<thead>
+			<tr>
+				<th>Total Commission</th>
+				<th>Average Commission</th>
+				<th>Number of Tickets</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for row in rows %}
+			<tr>
+				<td>{{row["sum(price * 0.1)"]}}</td>
+				<td>{{row["avg(price * 0.1)"]}}</td>
+				<td>{{row["count(*)"]}}</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+
+
+	<br><br><br><br><br>
+
+	<form method="POST">
+        <center>
+            <H1>View My Commission</H1> <br>
+            <form class="upComingSearch">
+                <label>start_date
+                    <input type="date" id="start_date" name="start_date" min="2015-12-01" max="2025-12-31">
+                </label>
+                <label>end_date
+                    <input type="date" id="end_date" name="end_date" min="2015-12-01" max="2025-12-31">
+                </label>
+                <button type="button">Search</button>
+                <!-- <input type="submit" value="search"> -->
+            </form>
+        </center>
+    </form>
+    <div id="res" height='200px'>
+
+    </div>
+
+</body>
+
+</html>

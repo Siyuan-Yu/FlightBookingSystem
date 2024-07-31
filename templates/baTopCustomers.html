@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>baTopCustomers</title>
+</head>
+<body>
+    <a href="/logout">Log Out</a> <br>
+    <a href='/baHomePage'>Back to Home Page</a>
+    <h2>The Top 5 Customers By Ticket in the Last 6 months</h2>
+    <table class="table table-striped" style="width:100%;text-align: center;">
+
+        <thead>
+            <tr>
+                <th>cust_email</th>
+                <th>ticket_num</th>
+                <th>name</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for i in range(c1xAxis_categories_email|length)  %}
+            <td>{{ c1xAxis_categories_email[i] }}</td>
+            <td>{{ top5_tickets[i] }}</td>
+            <td>{{ c1xAxis_categories_name[i] }}</td>
+            <tr></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="/commission_bar1">commission_bar1</a>
+
+<br>
+<br>
+<br>
+
+ 
+    <h2>The Top 5 Customers By Commissions in the Last 6 months</h2>
+    <table class="table table-striped" style="width:100%;text-align: center;">
+        <thead>
+            <tr>
+                <th>cust_email</th>
+                <th>commission</th>
+                <th>name</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for i in range(c2xAxis_categories_email|length)  %}
+            <td>{{ c2xAxis_categories_email[i] }}</td>
+            <td>{{ top5_commission[i] }}</td>
+            <td>{{ c2xAxis_categories_name[i] }}</td>
+            <tr></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="/commission_bar2">commission_bar2</a>
+
+</body>
+</html>
